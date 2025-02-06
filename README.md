@@ -18,6 +18,7 @@ The model successfully classified most of the rocks with high accuracy.
 - **Lens:** MVL-HF0828M-6MPE
 - **Camera Stand:** Aremak Adjustable Machine Vision Test Stand
 - **Lighting:** Hikrobot Flat Light (MV-LBES-120-120-Y35-W)
+- **Lighting Unit:** Hikrobot Light Control Units
 - **Operating System:** Windows
 - **Software Tools:** Python, OpenCV, Hikrobot SDK, NumPy
 
@@ -50,7 +51,7 @@ Run the following command to classify rocks in real time:
 ```bash
 python PredictRocks.py
 ```
-## 5 Code Documentation 📜
+## 5 Code Documentation 
 
 ## 6 Internship Acknowledgment 
 

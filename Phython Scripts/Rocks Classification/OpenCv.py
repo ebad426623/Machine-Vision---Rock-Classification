@@ -9,10 +9,11 @@ from MvCameraControl_class import *
 
 
 # Global Variables
-edge = 100
 cv_image = None
-detected_colors = [] 
 csv_file = "rock_data.csv"
+drawing = False
+ix, iy = -1, -1 
+fx, fy = -1, -1
 
 
 # Initialize Camera SDK
@@ -32,7 +33,6 @@ if deviceList.nDeviceNum == 0:
 
 print(f"Found {deviceList.nDeviceNum} device(s).")
 
-toEdge = int(input("Press 0 for Live Video and 1 for Live Edge Detetction: ")) 
 
 # Get First Device
 stDeviceList = ctypes.cast(deviceList.pDeviceInfo[0], ctypes.POINTER(MV_CC_DEVICE_INFO)).contents
@@ -94,47 +94,6 @@ def getFrame():
     return cv_image
 
 
-# Edge Detection
-def edge_detection(cv_image):
-    global edge
-    gray = cv2.cvtColor(cv_image, cv2.COLOR_BGR2GRAY)
-    blurred = cv2.GaussianBlur(src=gray, ksize=(3, 5), sigmaX=0.5) 
-    edges = cv2.Canny(blurred, edge, edge)
-    edge -= 1
-
-    if(edge < 30):
-        edge = 100
-
-    return edges
-
-
-def detect_color(hue, sat, val):
-    if sat < 50 and val > 200:
-        return "White"
-    
-    elif val < 100:
-        return "Black"
-    
-    elif (0 <= hue <= 10 or 170 <= hue <= 179):
-        return "Red"
-    
-    elif 10 < hue <= 40:
-        return "Yellow"
-    
-    elif 40 < hue <= 90:
-        return "Green"
-    
-    elif 90 < hue <= 170:
-        return "Blue"
-    
-    elif 160 < hue <= 170:
-        return "Pink"
-
-
-
-drawing = False
-ix, iy = -1, -1 
-fx, fy = -1, -1
 
 # Mouse Callback Function
 def mouse_callback(event, x, y, flags, param):
@@ -153,9 +112,9 @@ def mouse_callback(event, x, y, flags, param):
 
             # Extract ROI
             roi = cv_image[min(iy, fy):max(iy, fy), min(ix, fx):max(ix, fx)]
+            
             hsv_roi = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
             avg_hsv = hsv_roi.mean(axis=(0, 1))
-            avg_hsv_text = f"Avg HSV: ({avg_hsv[0]:.2f}, {avg_hsv[1]:.2f}, {avg_hsv[2]:.2f})"
             
             class_name = input("Enter Rock's Class [0, 1 ,2]: ")
 
@@ -172,22 +131,6 @@ def mouse_callback(event, x, y, flags, param):
         cv_image = getFrame()
         cv2.imshow("Camera Stream", cv_image)
 
-    
-    # elif event == cv2.EVENT_MBUTTONDOWN:
-    #     hsv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
-        
-    #     hue = hsv_image[y, x, 0]
-    #     sat = hsv_image[y, x, 1]
-    #     val = hsv_image[y, x, 2]
-
-    #     color_name = detect_color(hue, sat, val)
-    #     print(f"Left button clicked at ({x}, {y}), HSV: ({hue}, {sat}, {val}), Detected Color: {color_name}")
-
-    #     detected_colors.append((x, y, color_name))
-    #     cv2.putText(cv_image, color_name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 
-    #                 1, (255, 255, 255), 2, cv2.LINE_AA)
-        
-    #     cv2.imshow("Camera Stream", cv_image)
 
 
 # Main Loop
@@ -201,18 +144,11 @@ try:
         if cv_image is None:
             continue
 
-        if toEdge == 1:
-            cv_image = edge_detection(cv_image)
-
-        # for (x, y, color_name) in detected_colors:
-        #     cv2.putText(cv_image, color_name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 
-        #             1, (255, 255, 255), 2, cv2.LINE_AA)
-
         # Display Image and Press ESC to exit
         cv2.imshow("Camera Stream", cv_image)
 
 
-        if cv2.waitKey(0) == 27:
+        if cv2.waitKey(1) == 27:
             break
 
 except KeyboardInterrupt:

@@ -24,9 +24,9 @@ The model successfully classified most of the rocks with high accuracy.
 
 ## 3 Setup Photos
 
-Include images of your hardware setup in the `images/` folder inside your repository. Reference them in the README:
-
 ![Setup Image](images/my-setup.jpg)
+![Setup Image](images/my-setup1.jpg)
+![Setup Image](images/my-setup2.jpg)
 
 ## 4 Installation and Running Instructions 
 

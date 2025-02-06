@@ -54,5 +54,5 @@ python PredictRocks.py
 
 ## 6 Internship Acknowledgment 
 
-🏢 This project was developed during an internship at [Aremak Bilişim Teknolojileri](https://www.aremak.com.tr) under the supervision of Emrah Bala.
+This project was developed during an internship at [Aremak Bilişim Teknolojileri](https://www.aremak.com.tr) under the supervision of Emrah Bala.
 

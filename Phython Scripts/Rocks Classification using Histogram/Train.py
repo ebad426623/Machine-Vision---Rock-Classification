@@ -262,19 +262,25 @@ def classify_rock():
     pass
 
 if __name__ == "__main__":
-    # print("Data Collection Started...")
-    # create_csv()
-    # print("Data Collection Completed...")
-    # print()
+    menu = int(input("Press 0 for Classification using Histogram \nEnter a number: "))
 
-    print("Model Training Started...")
-    train()
-    print("Model Training Completed...")
-    print()
 
-    print("Live Rock Classification...")
-    classify_rock()
-    print("Live Rock Classification Completed...")
+    if menu == 0:
+        # print("Data Collection Started...")
+        # create_csv()
+        # print("Data Collection Completed...")
+        # print()
+
+        
+
+        print("Model Training Started...")
+        train()
+        print("Model Training Completed...")
+        print()
+
+        print("Live Rock Classification...")
+        classify_rock()
+        print("Live Rock Classification Completed...")
 
     
 

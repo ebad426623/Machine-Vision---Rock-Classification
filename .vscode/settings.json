@@ -1,3 +1,6 @@
 {
-  "python.analysis.extraPaths": ["./Phython Scripts/MvImport"]
+  "python.analysis.extraPaths": [
+    "./Phython Scripts/MvImport",
+    "./Python Scripts/MvImport"
+  ]
 }

@@ -1,16 +1,12 @@
 import os
 import sys
 import cv2
-import csv
 import ctypes
 import random
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import train_test_split
 
 sys.path.append("../MvImport")
 from MvCameraControl_class import *

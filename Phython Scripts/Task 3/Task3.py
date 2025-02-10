@@ -1,3 +1,4 @@
+import os
 import sys
 import cv2
 import csv
@@ -17,6 +18,7 @@ from MvCameraControl_class import *
 
 ### GLOBAL VARIABLES
 cam = None
+file = "rock_data_from_input.csv"
 cv_image = None
 background = None
 label_colors = {}
@@ -139,9 +141,9 @@ def perform_task():
         # cv2.setMouseCallback("Original Image", mouse_callback)
 
         cv2.namedWindow("Controls", cv2.WINDOW_NORMAL)
-        cv2.createTrackbar("Threshold", "Controls", 30, 255, lambda x: None)
-        cv2.createTrackbar("Kernel Size", "Controls", 5, 100, lambda x: None)
-        cv2.createTrackbar("Minimum Area", "Controls", 1000, 100000, lambda x: None)
+        cv2.createTrackbar("Threshold", "Controls", 25, 255, lambda x: None)
+        cv2.createTrackbar("Kernel Size", "Controls", 16, 100, lambda x: None)
+        cv2.createTrackbar("Minimum Area", "Controls", 3000, 100000, lambda x: None)
 
         while True:
             if (cv_image := getFrame()) is None: continue
@@ -177,8 +179,14 @@ def perform_task():
             cv2.namedWindow("Colored Mask", cv2.WINDOW_NORMAL)
             cv2.imshow("Colored Mask", colored_image)
 
-            if cv2.waitKey(1) & 0xFF == 27:
+            key = cv2.waitKey(1)
+
+            if key == 27:
                 break
+
+            if key == ord('r'):
+                capture_background()
+                
 
     except KeyboardInterrupt:
         pass
@@ -194,11 +202,12 @@ def capture_background():
     global background
     print("Capturing background, please ensure no objects are in view...")
     background = getFrame()
+    cv2.imwrite("images/background.png", background)
     print("Background captured.")
 
 def train():
     global scaler, knn
-    data = pd.read_csv("rock_data_from_input.csv", header=None)
+    data = pd.read_csv(file, header=None)
     X = data.iloc[:, :-1].values  
     y = data.iloc[:, -1].values  
     
@@ -234,7 +243,10 @@ def classify_object(image, mask):
 
 if __name__ == "__main__":
     open_camera()
-    menu = int(input("Press 0 to take background image: "))
-    capture_background()
+    path = "images/background.png"
+    if os.path.exists(path):
+        background = cv2.imread(path)
+    else:
+        capture_background()
     train()
     perform_task()
